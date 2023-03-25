@@ -8,6 +8,4 @@ RUN npm install
 # get the source code
 COPY backend /app/
 
-RUN npx tsc
-
-CMD ["node", "build"]
+CMD ["npm", "run", "dev"]
