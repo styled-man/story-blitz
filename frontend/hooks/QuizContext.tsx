@@ -1,7 +1,7 @@
 import React, { useState, useContext, SetStateAction, Dispatch, ReactNode } from "react"
 
 interface QuizContextType {
-    quizData: QuizDataType
+    quizData: QuizDataType | null
     setQuizData: Dispatch<SetStateAction<any>>
     articleName: string
     setArticleName: (articleName: string) => void
@@ -59,19 +59,7 @@ export function useQuizContext() {
 export function QuizProvider({ children }: { children: ReactNode }) {
     const [articleName, setArticleName] = useState<string>("")
     const [sections, setSections] = useState<SectionType[]>([])
-    const [quizData, setQuizData] = useState({
-        story: "",
-        questions: [
-            {
-                question: "",
-                optionA: "",
-                optionB: "",
-                optionC: "",
-                correctAnswer: "",
-                explanation: "",
-            },
-        ],
-    })
+    const [quizData, setQuizData] = useState(null)
     const [selectedSections, setSelectedSections] = useState<string[]>([])
 
     return (

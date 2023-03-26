@@ -26,11 +26,16 @@ const Quiz: NextPage = () => {
     }
 
     useEffect(() => {
-        async function getQuizData(cache: boolean = true) {
+
+        if (quizData !== null) {
+            return;
+        }
+
+        async function getQuizData(cache: boolean = false) {
             const data = sections
                 .filter(e => selectedSections.indexOf(e.title) != -1)
                 .map(e => ({ title: e.title, content: e.content }))
-            setSectionNames([data[0].title, data[1].title])
+            setSectionNames([data[0]?.title, data[1]?.title])
             console.log(data)
 
             if (cache) {
@@ -112,9 +117,9 @@ const Quiz: NextPage = () => {
         getQuizData()
     }, [])
 
-    useEffect(() => {
-        handleTimeRemaining()
-    }, [timeRemaining])
+    // useEffect(() => {
+    //     handleTimeRemaining()
+    // }, [timeRemaining])
 
     return (
         <>
@@ -145,11 +150,11 @@ const Quiz: NextPage = () => {
                     <h1 className="text-3xl font-bold mb-5">
                         {articleName} - {sectionNames[0]} & {sectionNames[1]}
                     </h1>
-                    <p className="text-xl font-light">{quizData.story}</p>
+                    <p className="text-xl font-light">{quizData?.story}</p>
                 </div>
 
                 <div className="flex items-center justify-center flex-col gap-4">
-                    {quizData.questions?.map(el => {
+                    {quizData?.questions?.map(el => {
                         return (
                             <Question
                                 key={el.question}
