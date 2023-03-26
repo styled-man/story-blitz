@@ -1,3 +1,5 @@
+import { ChangeEvent } from "react"
+
 export default function Option({
     name,
     onChange,
@@ -5,7 +7,7 @@ export default function Option({
     isDisabled,
 }: {
     name: string
-    onChange: (e: { currentTarget: { checked: boolean } }) => void
+    onChange: (e: ChangeEvent<HTMLInputElement>) => void
     checked: boolean
     isDisabled: boolean
 }) {
