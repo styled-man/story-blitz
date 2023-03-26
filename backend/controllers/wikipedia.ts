@@ -13,7 +13,8 @@ export const getArticles = async (keywords: string) => {
 export const getContent = async (articleId: string) => {
     try {
         const data = await wiki().page(articleId)
-        return data.content()
+        let raw: string = await data.content() 
+        return raw
     } catch(e) {
         console.error(e)
     }

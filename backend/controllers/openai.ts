@@ -9,7 +9,7 @@ const configuration = new Configuration({
 const openai = new OpenAIApi(configuration)
 
 export const generateData = async (data: WikipediaData[]) => {
-    const firstPrompt: any = [{role: "user", content: `${PRE_PROMPT}\n${data.map((category: WikipediaData) => "\n" + category.section + "\n" + category.data)}`}]
+    const firstPrompt: any = [{role: "user", content: `${PRE_PROMPT}\n${data.map((category: WikipediaData) => "\n" + category.title + "\n" + category.content)}`}]
     const storyRaw = await openai.createChatCompletion({
         model: "gpt-3.5-turbo",
         messages: firstPrompt,
