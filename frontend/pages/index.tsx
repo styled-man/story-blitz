@@ -8,7 +8,7 @@ import Question from "../components/Question"
 
 const Home: NextPage = () => {
     return (
-        <main className="flex flex-col justify-center h-screen m-2">
+        <main className="flex flex-col justify-center h-screen m-4">
             <h1 className="text-5xl font-sans font-bold">Story Blitz</h1>
             <h2>Learn through story telling.</h2>
             <Input />
