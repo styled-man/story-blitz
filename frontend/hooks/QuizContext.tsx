@@ -6,7 +6,7 @@ interface QuizContextType {
     articleName: string
     setArticleName: (articleName: string) => void
     sections: SectionType[]
-    setSections: Dispatch<SetStateAction<[]>>
+    setSections: Dispatch<SetStateAction<SectionType[]>>
     selectedSections: string[]
     setSelectedSections: Dispatch<SetStateAction<string[]>>
 }
@@ -23,10 +23,10 @@ interface QuizDataType {
     }[]
 }
 
-interface SectionType {
+export interface SectionType {
     title: string
     content: string
-    items: any
+    items?: any
 }
 
 const QuizContext = React.createContext<QuizContextType>({
@@ -58,7 +58,7 @@ export function useQuizContext() {
 
 export function QuizProvider({ children }: { children: ReactNode }) {
     const [articleName, setArticleName] = useState<string>("")
-    const [sections, setSections] = useState<[]>([])
+    const [sections, setSections] = useState<SectionType[]>([])
     const [quizData, setQuizData] = useState({
         story: "",
         questions: [

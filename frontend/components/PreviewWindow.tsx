@@ -10,7 +10,7 @@ interface PreviewWindowProps {
 
 function PreviewWindow({ sections, selectedSections }: PreviewWindowProps) {
     return (
-        <article className="w-[600px] min-h-[95vh] drop-shadow-xl rounded-md bg-container p-4 overflow-scroll">
+        <article className="w-[600px] h-[95vh] drop-shadow-xl rounded-md bg-container p-4 overflow-scroll">
             {sections.length > 0 ? (
                 <>
                     <h1 className=" text-3xl font-bold">Parsed Content:</h1>

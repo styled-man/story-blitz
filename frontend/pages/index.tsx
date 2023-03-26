@@ -1,12 +1,35 @@
 import type { NextPage } from "next"
+
 import { useRouter } from "next/router"
 import { FormEvent, useState } from "react"
-import { useQuizContext } from "../hooks/QuizContext"
+import { SectionType, useQuizContext } from "../hooks/QuizContext"
 
 const Home: NextPage = () => {
     const { setArticleName, setSections } = useQuizContext()
     const [input, setInput] = useState<string>("")
     const router = useRouter()
+
+    const mergeContent = (sections: SectionType[]): SectionType[] => {
+        const mergedSections = []
+
+        for (const section of sections) {
+            let mergedContent = section.content
+
+            if (section.items) {
+                const mergedItems = mergeContent(section.items)
+                for (const mergedItem of mergedItems) {
+                    mergedContent += " " + mergedItem.content
+                }
+            }
+
+            mergedSections.push({
+                title: section.title,
+                content: mergedContent,
+            })
+        }
+
+        return mergedSections
+    }
 
     const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
         event.preventDefault()
@@ -16,7 +39,7 @@ const Home: NextPage = () => {
             const raw = await fetch(`http://localhost:${apiUrl}/wikipedia?keywords=${input}`)
             const data = await raw.json()
             setArticleName(data.articleName)
-            setSections(data.data)
+            setSections(mergeContent(data.data))
             router.push("/selection")
         } catch (e) {
             console.error(e)
