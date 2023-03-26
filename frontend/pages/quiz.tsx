@@ -2,9 +2,13 @@ import { NextPage } from "next"
 import Head from "next/head"
 import { useEffect, useState } from "react"
 import { AiFillHeart } from "react-icons/ai"
+
 import Question from "../components/Question"
+import { useQuizContext } from "../hooks/QuizContext"
 
 const Quiz: NextPage = () => {
+    const { quizData, selectedSections, setQuizData } = useQuizContext()
+
     const [heartsLeft, setHeartsLeft] = useState(3)
     const [timeRemaining, setTimeRemaining] = useState(300) // FIXME
 
@@ -18,6 +22,16 @@ const Quiz: NextPage = () => {
             alert("You ran out of time!")
         }
     }
+
+    useEffect(() => {
+        async function getQuizData() {
+            let result = await fetch("http://localhost:6969/generate", {
+                // body: {
+                //     INSERT BODY REQUEST TO SAVE TO QUIZ CONTEXT
+                // },
+            })
+        }
+    }, [])
 
     useEffect(() => {
         handleTimeRemaining()
@@ -49,22 +63,20 @@ const Quiz: NextPage = () => {
 
             <main className="grid grid-cols-2 px-10 my-10 gap-x-20">
                 <div>
-                    <p className="text-xl font-light">
-                        Lorem, ipsum dolor sit amet consectetur adipisicing elit. Illum ullam
-                        laudantium perferendis eum animi, totam repellat porro. Ab tempore itaque
-                        qui alias atque doloremque! Quam corporis a ab? Quia eveniet vel pariatur
-                        maxime sunt voluptatem quaerat atque laboriosam nesciunt. Laudantium ad
-                        nulla laboriosam magni molestiae, voluptatum aspernatur sit dignissimos quod
-                        veritatis aliquam velit qui? Magnam architecto nulla quam dolore quod error
-                        corrupti exercitationem sequi, sunt itaque facere obcaecati rerum dolorum
-                        possimus rem fuga deserunt nam quis doloremque qui perferendis totam
-                        laudantium amet beatae? Totam vero, dolore esse reprehenderit sint voluptate
-                        ducimus, laudantium commodi id earum magni ratione veniam, rerum beatae?
-                    </p>
+                    <p className="text-xl font-light">{quizData.story}</p>
                 </div>
 
                 <div className="flex items-center justify-center flex-col gap-4">
-                    <Question
+                    {quizData.questions.map(el => {
+                        return (
+                            <Question
+                                question={el.question}
+                                options={[el.optionA, el.optionB, el.optionC]}
+                                correct_answer={el.correctAnswer}
+                            />
+                        )
+                    })}
+                    {/* <Question
                         question="this is the question"
                         options={["option 1", "option 2", "option 3"]}
                         correct_answer="option 1"
@@ -78,7 +90,7 @@ const Quiz: NextPage = () => {
                         question="this is the question"
                         options={["option 1", "option 2", "option 3"]}
                         correct_answer="option 1"
-                    />
+                    /> */}
                 </div>
             </main>
         </>
