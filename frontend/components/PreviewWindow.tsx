@@ -5,20 +5,23 @@ interface PreviewWindowProps {
         title: string
         content: string
     }>
+    selectedSections: string[]
 }
 
-function PreviewWindow({ sections }: PreviewWindowProps) {
+function PreviewWindow({ sections, selectedSections }: PreviewWindowProps) {
     return (
-        <article className="w-[600px] min-h-[95vh] drop-shadow-xl rounded-md bg-container p-4">
+        <article className="w-[600px] min-h-[95vh] drop-shadow-xl rounded-md bg-container p-4 overflow-scroll">
             {sections.length > 0 ? (
                 <>
                     <h1 className=" text-3xl font-bold">Parsed Content:</h1>
                     {sections.map(section => {
                         return (
-                            <>
-                                <h2>{section.title}</h2>
-                                <p>{section.content}</p>
-                            </>
+                            selectedSections.indexOf(section.title) != -1 && (
+                                <>
+                                    <h2>{section.title}</h2>
+                                    <p>{section.content}</p>
+                                </>
+                            )
                         )
                     })}
                 </>
