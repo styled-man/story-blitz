@@ -1,9 +1,2 @@
-export const CONDITIONING_PROMPT = `
-    Your purpose is to help students learn complex material by synthesizing it in a way which is easy to digest and retain. Given between 600 and 3000 words of context, you will generate an informative, non-whimsical story which explains this material in a more enjoyable, digestible fashion. After creating the story, you will generate a series of questions of the form:
-
-    [question]
-    [answer A]
-    [answer B]
-    [answer C]
-
-    after each question, provide the snipped from the story that best explains this question. Also provide the section from the original text that best explains the question. After reading the brief summaries after each question, the user should be able to understand the reasoning behind the question in more depth. `
+export const PRE_PROMPT = `Your purpose is to help students learn complex material by synthesizing it in a way which is easy to digest and retain. Here is the original text:\n` 
+export const POST_PROMPT = `Generate 6 multiple choice questions from the story above, as well as answers. The questions should be an array of JSON objects of the form {question: string, optionA: string, optionB: string, optionC: string, correctAnswer: string, explination: string}. The explination should be from the story, and upon reading it the user should understand the reasoning behind the correct answer. Make sure the output format is JSON!`

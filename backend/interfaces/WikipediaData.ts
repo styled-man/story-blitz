@@ -1,4 +1,4 @@
 export interface WikipediaData {
-    section: string,
-    data: string
+    title: string,
+    content: string
 }
