@@ -2,16 +2,24 @@ import type { NextPage } from "next"
 import Head from "next/head"
 import Image from "next/image"
 import styles from "../styles/Home.module.css"
-
 import Question from "../components/Question"
-import { FormEvent, useState} from "react"
+import { useQuizContext } from "../hooks/QuizContext"
+import { FormEvent, useState } from "react"
 
 const Home: NextPage = () => {
+    const { quizData, setQuizData } = useQuizContext()
     const [input, setInput] = useState<string>("")
 
-    const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
+    const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
         event.preventDefault()
-        fetch(`http://localhost:3000/article?keywords=${input}`)
+        try {
+            const raw = await fetch(`http://localhost:6969/wikipedia?keywords=${input}`)
+            const data = await raw.json()
+            setQuizData(data)
+            console.log(data)
+        } catch (e) {
+            console.error(e)
+        }
     }
 
     return (
@@ -24,7 +32,7 @@ const Home: NextPage = () => {
                     className=" border-black border-2 mt-4 p-3 max-w-[400px]"
                     placeholder="Find a study topic"
                     value={input}
-                    onChange={(e) => setInput(e.target.value)}
+                    onChange={e => setInput(e.target.value)}
                 />
             </form>
         </main>
