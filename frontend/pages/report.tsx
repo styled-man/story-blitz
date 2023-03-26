@@ -4,6 +4,7 @@ import Highcharts from "highcharts"
 import HighchartsReact from "highcharts-react-official"
 import { useEffect, useState } from "react"
 import { useQuizContext } from "../hooks/QuizContext"
+import { useRouter } from "next/router"
 
 // Options for the graph
 
@@ -28,10 +29,12 @@ const Information: React.FC<InformationProps> = ({ articleLink, improvement }) =
 }
 
 const Results: NextPage = () => {
-    const [amountCorrect, setAmountCorrect] = useState<number>(10)
-    const [amountIncorrect, setAmountIncorrect] = useState<number>(0)
-    const [amountIncomplete, setAmountIncomplete] = useState<number>(0)
-    
+    const router = useRouter()
+
+    const [amountCorrect, setAmountCorrect] = useState<number>(4)
+    const [amountIncorrect, setAmountIncorrect] = useState<number>(1)
+    const [amountIncomplete, setAmountIncomplete] = useState<number>(1)
+
     const options = {
         title: {
             text: "Success Rate",
@@ -66,7 +69,7 @@ const Results: NextPage = () => {
         "https://en.wikipedia.org/wiki/Cardiac_arrest"
     )
     const [improvement, setImprovement] = useState<string>(
-        "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Omnis eos rem est repellat veritatis dolorum, atque id sit? Debitis, molestias maxime? Cumque perferendis dignissimos ullam? Fuga debitis culpa rem voluptas?Lorem ipsum dolor sit amet, consectetur adipisicing elit. Omnis eos rem est repellat veritatis dolorum, atque id sit? Debitis, molestias maxime? Cumque perferendis dignissimos ullam? Fuga debitis culpa rem voluptas?"
+        `To improve your understanding of poliovirus and immunity, you should focus on two areas. Firstly, antibodies produced by the immune system, not surgery, are the way individuals develop immunity to poliovirus. Secondly, infection or vaccination with one type of poliovirus does not provide immunity against the other types. By reviewing the basics of the immune system and the specifics of poliovirus transmission and prevention, you will be better prepared to answer similar questions correctly in the future.`
     )
 
     return (
@@ -83,14 +86,14 @@ const Results: NextPage = () => {
             </div>
 
             <div className="flex gap-20 justify-center w-full pt-16">
-                <a href="/selection">
-                    <span className="bg-black text-white p-5 rounded-md h-[100%]">Try again</span>
-                </a>
-                <a href="/">
-                    <span className="bg-black text-white p-5 rounded-md h-[100%]">
-                        Choose a new topic
-                    </span>
-                </a>
+                <span
+                    onClick={() => {
+                        router.push("/")
+                    }}
+                    className="bg-black text-white p-5 rounded-md h-[100%]"
+                >
+                    Study Again
+                </span>
             </div>
         </div>
     )
