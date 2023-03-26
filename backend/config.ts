@@ -1,4 +1,4 @@
-export const PROMPT = `
+export const CONDITIONING_PROMPT = `
     Your purpose is to help students learn complex material by synthesizing it in a way which is easy to digest and retain. Given between 600 and 3000 words of context, you will generate an informative, non-whimsical story which explains this material in a more enjoyable, digestible fashion. After creating the story, you will generate a series of questions of the form:
 
     [question]
