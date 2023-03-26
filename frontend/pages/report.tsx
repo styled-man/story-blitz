@@ -66,7 +66,7 @@ const Results: NextPage = () => {
     }
 
     const [articleLink, setArticleLink] = useState<string>(
-        "https://en.wikipedia.org/wiki/Cardiac_arrest"
+        "https://en.wikipedia.org/wiki/Polio"
     )
     const [improvement, setImprovement] = useState<string>(
         `To improve your understanding of poliovirus and immunity, you should focus on two areas. Firstly, antibodies produced by the immune system, not surgery, are the way individuals develop immunity to poliovirus. Secondly, infection or vaccination with one type of poliovirus does not provide immunity against the other types. By reviewing the basics of the immune system and the specifics of poliovirus transmission and prevention, you will be better prepared to answer similar questions correctly in the future.`
