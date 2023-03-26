@@ -1,8 +1,12 @@
 import React, { useState, useContext, SetStateAction, Dispatch, ReactNode } from "react"
 
 interface QuizContextType {
-    quizData: any
-    setQuizData: Dispatch<SetStateAction<null>>
+    quizData: QuizDataType | {}
+    setQuizData: Dispatch<SetStateAction<{}>>
+    articleName: string
+    setArticleName: (articleName: string) => void
+    sections: SectionType[]
+    setSections: Dispatch<SetStateAction<[]>>
 }
 
 interface QuizDataType {
@@ -19,9 +23,19 @@ interface QuizDataType {
     ]
 }
 
+interface SectionType {
+    title: string
+    content: string
+    items: any
+}
+
 const QuizContext = React.createContext<QuizContextType>({
-    quizData: null,
+    quizData: {},
     setQuizData: () => {},
+    articleName: "",
+    setArticleName: () => {},
+    sections: [],
+    setSections: () => {},
 })
 
 export function useQuizContext() {
@@ -29,7 +43,15 @@ export function useQuizContext() {
 }
 
 export function QuizProvider({ children }: { children: ReactNode }) {
-    const [quizData, setQuizData] = useState(null)
+    const [articleName, setArticleName] = useState<string>("")
+    const [sections, setSections] = useState<[]>([])
+    const [quizData, setQuizData] = useState({})
 
-    return <QuizContext.Provider value={{ quizData, setQuizData }}>{children}</QuizContext.Provider>
+    return (
+        <QuizContext.Provider
+            value={{ quizData, setQuizData, articleName, setArticleName, sections, setSections }}
+        >
+            {children}
+        </QuizContext.Provider>
+    )
 }
