@@ -8,7 +8,7 @@ import { FormEvent, useState } from "react"
 import { useRouter } from "next/router"
 
 const Home: NextPage = () => {
-    const { quizData, setQuizData } = useQuizContext()
+    const { setArticleName, setSections } = useQuizContext()
     const [input, setInput] = useState<string>("")
     const router = useRouter()
 
@@ -17,8 +17,8 @@ const Home: NextPage = () => {
         try {
             const raw = await fetch(`http://localhost:6969/wikipedia?keywords=${input}`)
             const data = await raw.json()
-            setQuizData(data)
-            console.log(data)
+            setArticleName(data.articleName)
+            setSections(data.data)
             router.push("/selection")
         } catch (e) {
             console.error(e)
