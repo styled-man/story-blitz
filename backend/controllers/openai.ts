@@ -23,13 +23,13 @@ export const generateData = async (data: WikipediaData[]) => {
         model: "gpt-3.5-turbo",
         messages: firstPrompt,
         max_tokens: 3000,
-        temperature: 0,
+        temperature: 0.5,
         stream: false
     });
     const story = storyRaw.data.choices[0].message?.content
 
     const secondPrompt: any = [{role: "user", content: `${story}\n${POST_PROMPT}`}]
-    //console.log("SECOND PROMPT\n\n\n", secondPrompt)
+    console.log("SECOND PROMPT\n\n\n", secondPrompt)
 
     const questions_raw = await openai.createChatCompletion({
         model: "gpt-3.5-turbo",
@@ -39,6 +39,7 @@ export const generateData = async (data: WikipediaData[]) => {
         stream: false
     });
     let questions = questions_raw.data.choices[0].message?.content
+    console.log("\n\nQUESTIONS", questions)
     questions?.replace(/\n/g, "").replace(/\\/g, "")
     questions = JSON.parse(questions!)
 
