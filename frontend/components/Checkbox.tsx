@@ -1,3 +1,4 @@
+import { randomBytes } from "crypto"
 import { useState } from "react"
 
 interface CheckboxProps {
@@ -13,6 +14,8 @@ const Checkbox: React.FC<CheckboxProps> = ({
     onCheckedChange,
     selectedSections,
 }) => {
+    const [randomId] = useState(randomBytes(20).toString("hex"))
+
     const [isChecked, setIsChecked] = useState<boolean>(initialChecked)
 
     const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -25,15 +28,18 @@ const Checkbox: React.FC<CheckboxProps> = ({
     }
 
     return (
-        <label>
+        <div className="flex items-center justify-start gap-3 font-light">
             <input
                 type="checkbox"
                 checked={isChecked}
                 onChange={handleChange}
                 disabled={!isChecked && selectedSections.length >= 2}
+                id={randomId}
             />
-            {label}
-        </label>
+            <label htmlFor={randomId} className="cursor-pointer">
+                {label}
+            </label>
+        </div>
     )
 }
 
