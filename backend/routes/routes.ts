@@ -24,6 +24,10 @@ router.get("/wikipedia", async (req: Request, res: Response): Promise<Response> 
 
 router.get("/generate", async (req: Request, res: Response): Promise<Response> => {
     const wikiData: WikipediaData[] = req.body.wikiData
-    const result = await generateData(wikiData)
-    return res.status(200).send(result.data) 
+    try {
+        const result = await generateData(wikiData)
+        return res.status(200).send(result) 
+    } catch(e) {
+        return res.status(500).send(e)
+    }
 })
