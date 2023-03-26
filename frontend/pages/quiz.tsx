@@ -91,6 +91,7 @@ const Quiz: NextPage = () => {
                         },
                     ],
                 })
+                return
             }
 
             const apiUrl = process.env.NEXT_PUBLIC_API_PORT
@@ -148,7 +149,7 @@ const Quiz: NextPage = () => {
                 </div>
 
                 <div className="flex items-center justify-center flex-col gap-4">
-                    {quizData.questions.map(el => {
+                    {quizData.questions?.map(el => {
                         return (
                             <Question
                                 key={el.question}

@@ -30,11 +30,12 @@ const Selection: NextPage = props => {
                     Please select the subheadings that will be included in your study.
                 </h2>
                 <div className="flex flex-col mt-4">
-                    {sections.map(element => {
+                    {sections.map((element, i) => {
                         return (
                             <Checkbox
                                 onCheckedChange={onCheckChange}
                                 label={element?.title}
+                                key={i}
                                 selectedSections={selectedSections}
                             />
                         )
