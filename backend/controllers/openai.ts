@@ -10,13 +10,13 @@ const openai = new OpenAIApi(configuration);
 
 const assemblePrompt = (data: WikipediaData[]) => {
     console.log(data)
-    return `${CONDITIONING_PROMPT}\n${data.map((category: WikipediaData) => category.data)}`
+    return `${CONDITIONING_PROMPT}\n${data.map((category: WikipediaData) => "\n" + category.section + "\n" + category.data)}`
 }
 
 export const generateData = async (data: WikipediaData[]) => {
     const prompt = assemblePrompt(data)
-    console.log("PROMPT: ")
-    console.log(prompt)
+    //console.log("PROMPT: ")
+    //console.log(prompt)
     const response = await openai.createCompletion({
         model: "text-davinci-003",
         prompt,

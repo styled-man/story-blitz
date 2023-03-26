@@ -1,5 +1,5 @@
 import express, { Router, Request, Response } from "express";
-import { getContent } from "../controllers/wikipedia"
+import { getContent, getArticles } from "../controllers/wikipedia"
 import { WikipediaData } from "../interfaces/WikipediaData";
 import { generateData } from "../controllers/openai";
 
@@ -10,6 +10,12 @@ router.get("/", async (req: Request, res: Response): Promise<Response> => {
     version: 0.1,
   });
 });
+
+router.get("/article", async (req: Request, res: Response): Promise<Response> => {
+    const keywords: string = req.query.keywords as string
+    const data = await getArticles(keywords)
+    return res.status(200).send({title: data})
+})
 
 router.get("/wikipedia", async (req: Request, res: Response): Promise<Response> => {
     const data = await getContent(req.body.articleId)
