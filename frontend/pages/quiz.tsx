@@ -148,21 +148,6 @@ const Quiz: NextPage = () => {
                             />
                         )
                     })}
-                    {/* <Question
-                        question="this is the question"
-                        options={["option 1", "option 2", "option 3"]}
-                        correct_answer="option 1"
-                    />
-                    <Question
-                        question="this is the question"
-                        options={["option 1", "option 2", "option 3"]}
-                        correct_answer="option 1"
-                    />
-                    <Question
-                        question="this is the question"
-                        options={["option 1", "option 2", "option 3"]}
-                        correct_answer="option 1"
-                    /> */}
                 </div>
             </main>
         </>
