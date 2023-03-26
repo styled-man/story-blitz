@@ -5,10 +5,12 @@ import styles from "../styles/Home.module.css"
 import Question from "../components/Question"
 import { useQuizContext } from "../hooks/QuizContext"
 import { FormEvent, useState } from "react"
+import { useRouter } from "next/router"
 
 const Home: NextPage = () => {
     const { quizData, setQuizData } = useQuizContext()
     const [input, setInput] = useState<string>("")
+    const router = useRouter()
 
     const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
         event.preventDefault()
@@ -17,6 +19,7 @@ const Home: NextPage = () => {
             const data = await raw.json()
             setQuizData(data)
             console.log(data)
+            router.push("/selection")
         } catch (e) {
             console.error(e)
         }
