@@ -9,7 +9,8 @@ services:
     ports:
       - ${PORT}:${PORT}
     volumes:
-      - ./backend/:/app/:ro
+      - ./backend/:/app/
+      - /app/node_modules
     env_file:
       - .env
 
