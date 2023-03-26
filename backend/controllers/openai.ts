@@ -8,17 +8,8 @@ const configuration = new Configuration({
 
 const openai = new OpenAIApi(configuration);
 
-const assemblePrompt = (data: WikipediaData[]) => {
-    //console.log(data)
-    return [{role: "user", content: `${PRE_PROMPT}\n${data.map((category: WikipediaData) => "\n" + category.section + "\n" + category.data)}`}]
-}
-
 export const generateData = async (data: WikipediaData[]) => {
-    const firstPrompt: any = assemblePrompt(data)
-    //const firstPrompt: any = [{role: "user", content: "What is the answer of 7+3?"}]
-    //console.log("PROMPT: ")
-    //console.log(prompt)
-    console.log("FIRST_PROMPT", firstPrompt)
+    const firstPrompt: any = [{role: "user", content: `${PRE_PROMPT}\n${data.map((category: WikipediaData) => "\n" + category.section + "\n" + category.data)}`}]
     const storyRaw = await openai.createChatCompletion({
         model: "gpt-3.5-turbo",
         messages: firstPrompt,
@@ -38,11 +29,10 @@ export const generateData = async (data: WikipediaData[]) => {
         temperature: 0,
         stream: false
     });
-    let questions = questions_raw.data.choices[0].message?.content
+    let questions = questions_raw.data.choices[0].message!.content
     console.log("\n\nQUESTIONS", questions)
-    questions?.replace(/\n/g, "").replace(/\\/g, "")
+    questions!.replace(/\n/g, "").replace(/\\/g, "")
     questions = JSON.parse(questions!)
 
     return {story, questions}
-    //console.log("RESPONSE", story.data.choices[0].message, questions.data.choices[0].message)
 }
