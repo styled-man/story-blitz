@@ -1,15 +1,22 @@
-import React from "react"
+import { randomBytes } from "crypto"
+import React, { useState } from "react"
 
-function QuestionOption({ question_answer }: { question_answer: string }) {
+interface QuestionOption {
+    children: string
+}
+
+function QuestionOption({ children }: QuestionOption) {
+    const [randomId] = useState(randomBytes(20).toString("hex"))
+
     return (
-        <div>
-            <input
-                className=" align-middle"
-                type="radio"
-                name="question_answer"
-                value={question_answer}
-            />
-            {question_answer}
+        <div className="flex items-center justify-start gap-3 mb-2">
+            <input type="radio" name="answer" id={randomId} value={children} />
+            <label
+                htmlFor={randomId}
+                className="first-letter:capitalize text-lg font-light cursor-pointer "
+            >
+                {children}
+            </label>
         </div>
     )
 }
