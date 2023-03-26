@@ -18,8 +18,10 @@ router.get("/article", async (req: Request, res: Response): Promise<Response> =>
 })
 
 router.get("/wikipedia", async (req: Request, res: Response): Promise<Response> => {
-    const data = await getContent(req.body.articleId)
-    return res.status(200).send(data)
+    const keywords: string = req.query.keywords as string
+    const article = await getArticles(keywords)
+    const data = await getContent(article!)
+    return res.status(200).send({articleName: article, data})
 })
 
 router.get("/generate", async (req: Request, res: Response): Promise<Response> => {
