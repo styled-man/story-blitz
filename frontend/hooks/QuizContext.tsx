@@ -1,26 +1,26 @@
 import React, { useState, useContext, SetStateAction, Dispatch, ReactNode } from "react"
 
 interface QuizContextType {
-    quizData: QuizDataType | {}
-    setQuizData: Dispatch<SetStateAction<{}>>
+    quizData: QuizDataType
+    setQuizData: Dispatch<SetStateAction<any>>
     articleName: string
     setArticleName: (articleName: string) => void
     sections: SectionType[]
     setSections: Dispatch<SetStateAction<[]>>
+    selectedSections: string[]
+    setSelectedSections: Dispatch<SetStateAction<string[]>>
 }
 
 interface QuizDataType {
     story: string
-    questions: [
-        {
-            question: string
-            optionA: string
-            optionB: string
-            optionC: string
-            correctAnswer: string
-            explanation: string
-        }
-    ]
+    questions: {
+        question: string
+        optionA: string
+        optionB: string
+        optionC: string
+        correctAnswer: string
+        explanation: string
+    }[]
 }
 
 interface SectionType {
@@ -30,12 +30,26 @@ interface SectionType {
 }
 
 const QuizContext = React.createContext<QuizContextType>({
-    quizData: {},
+    quizData: {
+        story: "",
+        questions: [
+            {
+                question: "",
+                optionA: "",
+                optionB: "",
+                optionC: "",
+                correctAnswer: "",
+                explanation: "",
+            },
+        ],
+    },
     setQuizData: () => {},
     articleName: "",
     setArticleName: () => {},
     sections: [],
     setSections: () => {},
+    selectedSections: [],
+    setSelectedSections: () => {},
 })
 
 export function useQuizContext() {
@@ -45,11 +59,33 @@ export function useQuizContext() {
 export function QuizProvider({ children }: { children: ReactNode }) {
     const [articleName, setArticleName] = useState<string>("")
     const [sections, setSections] = useState<[]>([])
-    const [quizData, setQuizData] = useState({})
+    const [quizData, setQuizData] = useState({
+        story: "",
+        questions: [
+            {
+                question: "",
+                optionA: "",
+                optionB: "",
+                optionC: "",
+                correctAnswer: "",
+                explanation: "",
+            },
+        ],
+    })
+    const [selectedSections, setSelectedSections] = useState<string[]>([])
 
     return (
         <QuizContext.Provider
-            value={{ quizData, setQuizData, articleName, setArticleName, sections, setSections }}
+            value={{
+                quizData,
+                setQuizData,
+                articleName,
+                setArticleName,
+                sections,
+                setSections,
+                selectedSections,
+                setSelectedSections,
+            }}
         >
             {children}
         </QuizContext.Provider>
