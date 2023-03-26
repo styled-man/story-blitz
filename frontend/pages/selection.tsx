@@ -1,19 +1,15 @@
 import type { NextPage } from "next"
-import { useEffect, useState } from "react"
 import { useRouter } from "next/router"
 
-import PreviewWindow from "../components/PreviewWindow"
 import Button from "../components/Button"
-import SelectionOption from "../components/SectionOption"
 import Checkbox from "../components/Checkbox"
+import PreviewWindow from "../components/PreviewWindow"
 import { useQuizContext } from "../hooks/QuizContext"
 
 const Selection: NextPage = props => {
     const { sections, articleName, selectedSections, setSelectedSections } = useQuizContext()
 
     const router = useRouter()
-
-    const maxSelection = 2
 
     function onCheckChange(checked: boolean, label: string) {
         if (checked && selectedSections.length < 2) {
@@ -43,7 +39,11 @@ const Selection: NextPage = props => {
                             />
                         )
                     })}
-                    <Button text="Next" className=" border-black border-2 w-36 mt-4" onClick={() => router.push("/quiz")} />
+                    <Button
+                        text="Next"
+                        className=" border-black border-2 w-36 mt-4"
+                        onClick={() => router.push("/quiz")}
+                    />
                 </div>
             </div>
             <div>

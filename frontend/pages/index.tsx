@@ -1,11 +1,7 @@
 import type { NextPage } from "next"
-import Head from "next/head"
-import Image from "next/image"
-import styles from "../styles/Home.module.css"
-import Question from "../components/Question"
-import { useQuizContext } from "../hooks/QuizContext"
-import { FormEvent, useState } from "react"
 import { useRouter } from "next/router"
+import { FormEvent, useState } from "react"
+import { useQuizContext } from "../hooks/QuizContext"
 
 const Home: NextPage = () => {
     const { setArticleName, setSections } = useQuizContext()
@@ -14,8 +10,10 @@ const Home: NextPage = () => {
 
     const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
         event.preventDefault()
+        const apiUrl = process.env.NEXT_PUBLIC_API_PORT
+
         try {
-            const raw = await fetch(`http://localhost:6969/wikipedia?keywords=${input}`)
+            const raw = await fetch(`http://localhost:${apiUrl}/wikipedia?keywords=${input}`)
             const data = await raw.json()
             setArticleName(data.articleName)
             setSections(data.data)

@@ -7,8 +7,8 @@ import Question from "../components/Question"
 import { useQuizContext } from "../hooks/QuizContext"
 
 const Quiz: NextPage = () => {
-    const { sections, articleName, selectedSections, setSelectedSections, quizData, setQuizData } = useQuizContext()
-
+    const { sections, articleName, selectedSections, setSelectedSections, quizData, setQuizData } =
+        useQuizContext()
 
     const [heartsLeft, setHeartsLeft] = useState(3)
     const [timeRemaining, setTimeRemaining] = useState(300) // FIXME
@@ -26,9 +26,12 @@ const Quiz: NextPage = () => {
 
     useEffect(() => {
         async function getQuizData() {
-            const data = sections.filter(e => selectedSections.indexOf(e.title) != -1).map(e => ({title: e.title, content: e.content}))
+            const data = sections
+                .filter(e => selectedSections.indexOf(e.title) != -1)
+                .map(e => ({ title: e.title, content: e.content }))
             console.log(data)
-            const result = await fetch("http://localhost:6969/generate", {
+            const apiUrl = process.env.NEXT_PUBLIC_API_PORT
+            const result = await fetch(`http://localhost:${apiUrl}/generate`, {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
@@ -37,7 +40,7 @@ const Quiz: NextPage = () => {
                     wikiData: data,
                     // INSERT BODY REQUEST TO SAVE TO QUIZ CONTEXT
                 }),
-            });
+            })
             const json = await result.json()
             console.log("RESULT", json)
             setQuizData(json)
@@ -83,27 +86,13 @@ const Quiz: NextPage = () => {
                     {quizData.questions.map(el => {
                         return (
                             <Question
+                                key={el.question}
                                 question={el.question}
                                 options={[el.optionA, el.optionB, el.optionC]}
                                 correct_answer={el.correctAnswer}
                             />
                         )
                     })}
-                    {/* <Question
-                        question="this is the question"
-                        options={["option 1", "option 2", "option 3"]}
-                        correct_answer="option 1"
-                    />
-                    <Question
-                        question="this is the question"
-                        options={["option 1", "option 2", "option 3"]}
-                        correct_answer="option 1"
-                    />
-                    <Question
-                        question="this is the question"
-                        options={["option 1", "option 2", "option 3"]}
-                        correct_answer="option 1"
-                    /> */}
                 </div>
             </main>
         </>

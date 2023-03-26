@@ -14,8 +14,8 @@ function Question({ question, options, correct_answer }: QuestionProps) {
             <h3 className="first-letter:capitalize text-xl mb-3 font-bold">{question}</h3>
 
             <div className="pl-5">
-                {options?.map(option => (
-                    <QuestionOption>{option}</QuestionOption>
+                {options?.map((option, index) => (
+                    <QuestionOption key={option + index}>{option}</QuestionOption>
                 ))}
             </div>
         </form>
