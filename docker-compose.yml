@@ -14,3 +14,15 @@ services:
     env_file:
       - .env
 
+  frontend:
+    container_name: frontend
+    build:
+      context: .
+      dockerfile: frontend/Dockerfile.dev
+    ports:
+      - ${FRONTEND_PORT}:${FRONTEND_PORT}
+    volumes:
+      - ./frontend:/app
+    env_file:
+      - .env
+
