@@ -10,14 +10,25 @@ const Selection: NextPage = props => {
     const router = useRouter()
     const [title, setTitle] = useState<string>("")
 
-    async function getData() {
-        const data = await fetch(`localhost:8080/article?keywords=${router.query}`)
-        console.log(data)
-    }
-
     useEffect(() => {
+        async function getData() {
+            try {
+                const { keywords } = router.query
+                if (keywords == undefined) {
+                    return
+                }
+                let data = await fetch(`http://localhost:6969/article?keywords=${keywords}`, {
+                    method: "GET",
+                })
+                let jsonData = await data.json()
+                console.log(jsonData)
+            } catch (error) {
+                console.log(error)
+            }
+        }
+
         getData()
-    }, [])
+    }, [router.query])
 
     const maxSelection = 2
 
