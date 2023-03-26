@@ -9,6 +9,7 @@ const configuration = new Configuration({
 const openai = new OpenAIApi(configuration)
 
 export const generateData = async (data: WikipediaData[]) => {
+    console.log("Generating data")
     const firstPrompt: any = [{role: "user", content: `${PRE_PROMPT}\n${data.map((category: WikipediaData) => "\n" + category.title + "\n" + category.content)}`}]
     const storyRaw = await openai.createChatCompletion({
         model: "gpt-3.5-turbo",
@@ -18,6 +19,7 @@ export const generateData = async (data: WikipediaData[]) => {
         stream: false
     })
     const story = storyRaw.data.choices[0].message?.content
+    console.log("generating prompt 2")
 
     const secondPrompt: any = [{role: "user", content: `${story}\n${POST_PROMPT}`}]
     //console.log("SECOND PROMPT\n\n\n", secondPrompt)
@@ -32,6 +34,7 @@ export const generateData = async (data: WikipediaData[]) => {
     let questions = questions_raw.data.choices[0].message!.content
     questions!.replace(/\n/g, "").replace(/\\/g, "")
     questions = JSON.parse(questions!)
+    console.log("finished")
 
     return {story, questions}
 }

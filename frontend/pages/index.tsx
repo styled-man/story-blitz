@@ -1,17 +1,64 @@
 import type { NextPage } from "next"
-import Head from "next/head"
-import Image from "next/image"
-import styles from "../styles/Home.module.css"
 
-import Input from "../components/Input"
-import Question from "../components/Question"
+import { useRouter } from "next/router"
+import { FormEvent, useState } from "react"
+import { SectionType, useQuizContext } from "../hooks/QuizContext"
 
 const Home: NextPage = () => {
+    const { setArticleName, setSections } = useQuizContext()
+    const [input, setInput] = useState<string>("")
+    const router = useRouter()
+
+    const mergeContent = (sections: SectionType[]): SectionType[] => {
+        const mergedSections = []
+
+        for (const section of sections) {
+            let mergedContent = section.content
+
+            if (section.items) {
+                const mergedItems = mergeContent(section.items)
+                for (const mergedItem of mergedItems) {
+                    mergedContent += " " + mergedItem.content
+                }
+            }
+
+            mergedSections.push({
+                title: section.title,
+                content: mergedContent,
+            })
+        }
+
+        return mergedSections
+    }
+
+    const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
+        event.preventDefault()
+        const apiUrl = process.env.NEXT_PUBLIC_API_PORT
+
+        try {
+            const raw = await fetch(`http://localhost:${apiUrl}/wikipedia?keywords=${input}`)
+            const data = await raw.json()
+            setArticleName(data.articleName)
+            setSections(mergeContent(data.data))
+            router.push("/selection")
+        } catch (e) {
+            console.error(e)
+        }
+    }
+
     return (
         <main className="flex flex-col justify-center h-screen m-4">
             <h1 className="text-5xl font-sans font-bold">Story Blitz</h1>
             <h2>Learn through story telling.</h2>
-            <Input />
+
+            <form onSubmit={handleSubmit}>
+                <input
+                    className=" border-black border-2 mt-4 p-3 max-w-[400px]"
+                    placeholder="Find a study topic"
+                    value={input}
+                    onChange={e => setInput(e.target.value)}
+                />
+            </form>
         </main>
     )
 }

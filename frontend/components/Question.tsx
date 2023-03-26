@@ -1,25 +1,24 @@
-import React from "react"
-
+import { randomBytes } from "crypto"
+import { useState } from "react"
 import QuestionOption from "./QuestionOption"
 
 interface QuestionProps {
     question: string
-    answer_a: string
-    answer_b: string
-    answer_c: string
+    options: string[]
     correct_answer: string
 }
 
-function Question(props: QuestionProps) {
+function Question({ question, options, correct_answer }: QuestionProps) {
     return (
-        <div>
-            <form className="">
-                {props.question}
-                <QuestionOption question_answer={props.answer_a}></QuestionOption>
-                <QuestionOption question_answer={props.answer_b}></QuestionOption>
-                <QuestionOption question_answer={props.answer_c}></QuestionOption>
-            </form>
-        </div>
+        <form className="bg-container p-3 rounded-md shadow-md w-full">
+            <h3 className="first-letter:capitalize text-xl mb-3 font-bold">{question}</h3>
+
+            <div className="pl-5">
+                {options?.map((option, index) => (
+                    <QuestionOption key={option + index}>{option}</QuestionOption>
+                ))}
+            </div>
+        </form>
     )
 }
 
