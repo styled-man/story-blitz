@@ -43,7 +43,7 @@ const Selection: NextPage = props => {
                             />
                         )
                     })}
-                    <Button text="Next" className=" border-black border-2 w-36 mt-4" />
+                    <Button text="Next" className=" border-black border-2 w-36 mt-4" onClick={() => router.push("/quiz")} />
                 </div>
             </div>
             <div>

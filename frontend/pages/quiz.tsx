@@ -7,7 +7,8 @@ import Question from "../components/Question"
 import { useQuizContext } from "../hooks/QuizContext"
 
 const Quiz: NextPage = () => {
-    const { quizData, selectedSections, setQuizData } = useQuizContext()
+    const { sections, articleName, selectedSections, setSelectedSections, quizData, setQuizData } = useQuizContext()
+
 
     const [heartsLeft, setHeartsLeft] = useState(3)
     const [timeRemaining, setTimeRemaining] = useState(300) // FIXME
@@ -25,12 +26,24 @@ const Quiz: NextPage = () => {
 
     useEffect(() => {
         async function getQuizData() {
-            let result = await fetch("http://localhost:6969/generate", {
-                // body: {
-                //     INSERT BODY REQUEST TO SAVE TO QUIZ CONTEXT
-                // },
-            })
+            const data = sections.filter(e => selectedSections.indexOf(e.title) != -1).map(e => ({title: e.title, content: e.content}))
+            console.log(data)
+            const result = await fetch("http://localhost:6969/generate", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({
+                    wikiData: data,
+                    // INSERT BODY REQUEST TO SAVE TO QUIZ CONTEXT
+                }),
+            });
+            const json = await result.json()
+            console.log("RESULT", json)
+            setQuizData(json)
         }
+
+        getQuizData()
     }, [])
 
     useEffect(() => {
