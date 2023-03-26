@@ -1,5 +1,3 @@
-import React from "react"
-
 interface PreviewWindowProps {
     sections: Array<{
         title: string
@@ -11,20 +9,17 @@ interface PreviewWindowProps {
 function PreviewWindow({ sections, selectedSections }: PreviewWindowProps) {
     return (
         <article className="w-[600px] h-[95vh] drop-shadow-xl rounded-md bg-container p-4 overflow-scroll">
-            {sections.length > 0 ? (
-                <>
-                    <h1 className=" text-3xl font-bold">Parsed Content:</h1>
-                    {sections.map(section => {
-                        return (
-                            selectedSections.indexOf(section.title) != -1 && (
-                                <>
-                                    <h2>{section.title}</h2>
-                                    <p>{section.content}</p>
-                                </>
-                            )
+            {selectedSections.length > 0 ? (
+                sections.map(section => {
+                    return (
+                        selectedSections.indexOf(section.title) != -1 && (
+                            <span key={`preview window ${section.title}`}>
+                                <h2 className="font-medium text-lg mb-2">{section.title}</h2>
+                                <p className="mb-5">{section.content}</p>
+                            </span>
                         )
-                    })}
-                </>
+                    )
+                })
             ) : (
                 <div className="flex items-center justify-center h-full">
                     <h1 className="text-2xl font-bold text-gray-400 bg-clip-text">

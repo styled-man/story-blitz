@@ -2,6 +2,7 @@ import { NextPage } from "next"
 import Head from "next/head"
 import { useEffect, useRef, useState } from "react"
 import { AiFillHeart } from "react-icons/ai"
+import Loading from "../components/Loading"
 
 import Question from "../components/Question"
 import { useQuizContext } from "../hooks/QuizContext"
@@ -10,15 +11,18 @@ const Quiz: NextPage = () => {
     const { sections, articleName, selectedSections, setSelectedSections, quizData, setQuizData } =
         useQuizContext()
     const [sectionNames, setSectionNames] = useState<string[]>(["", ""])
+    const [isLoading, setLoading] = useState(true)
 
     const [heartsLeft, setHeartsLeft] = useState(3)
-    const [timeRemaining, setTimeRemaining] = useState(300) // FIXME
+    const [startingTime] = useState(300)
+    const [timeRemaining, setTimeRemaining] = useState<number | null>(null) // FIXME
     const dataFetchedRef = useRef(false)
 
     const sleep = (ms: number) => new Promise(r => setTimeout(r, ms))
 
     async function handleTimeRemaining() {
-        if (timeRemaining > 0) {
+        if (timeRemaining === null) return
+        else if (timeRemaining > 0) {
             await sleep(1250)
             setTimeRemaining(timeRemaining - 1)
         } else {
@@ -27,7 +31,6 @@ const Quiz: NextPage = () => {
     }
 
     async function getQuizData(cache: boolean = false) {
-
         const data = sections
             .filter(e => selectedSections.indexOf(e.title) != -1)
             .map(e => ({ title: e.title, content: e.content }))
@@ -112,22 +115,27 @@ const Quiz: NextPage = () => {
 
     useEffect(() => {
         if (quizData !== null || dataFetchedRef.current) {
-            return;
+            return
         }
         dataFetchedRef.current = true
 
-        getQuizData()
+        getQuizData().then(() => {
+            setLoading(false)
+            setTimeRemaining(startingTime)
+        })
     }, [])
 
-    // useEffect(() => {
-    //     handleTimeRemaining()
-    // }, [timeRemaining])
+    useEffect(() => {
+        handleTimeRemaining()
+    }, [timeRemaining])
 
     return (
         <>
             <Head>
                 <title>Story Blitz - Quiz</title>
             </Head>
+
+            <Loading isActive={isLoading} />
 
             <nav className="flex items-center justify-end p-6 text-3xl gap-10 bg-container shadow">
                 <span className="flex items-center justify-center">
@@ -139,9 +147,13 @@ const Quiz: NextPage = () => {
                 </span>
 
                 <h3>
-                    <span>{(~~(timeRemaining / 60)).toString().padStart(2, "0")}</span>
+                    <span>
+                        {(~~((timeRemaining || startingTime) / 60)).toString().padStart(2, "0")}
+                    </span>
                     <span>:</span>
-                    <span>{(timeRemaining % 60).toString().padStart(2, "0")}</span>
+                    <span>
+                        {((timeRemaining || startingTime) % 60).toString().padStart(2, "0")}
+                    </span>
                 </h3>
             </nav>
 
@@ -150,7 +162,8 @@ const Quiz: NextPage = () => {
             <main className="grid grid-cols-2 px-10 my-10 gap-x-20">
                 <div>
                     <h1 className="text-3xl font-bold mb-5">
-                        {articleName} - {sectionNames[0]} & {sectionNames[1]}
+                        {articleName} - {sectionNames[0]} {sectionNames.length === 2 && "&"}{" "}
+                        {sectionNames[1]}
                     </h1>
                     <p className="text-xl font-light">{quizData?.story}</p>
                 </div>
