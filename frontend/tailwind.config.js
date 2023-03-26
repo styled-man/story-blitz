@@ -10,6 +10,11 @@ module.exports = {
     ],
     theme: {
         extend: {
+            colors: {
+                background: "rgb(250,251,252)",
+                accent: "rbg(64,112,219)",
+                container: "rgb(255,255,255)",
+            },
             fontFamily: {
                 sans: ["Ubuntu"],
             },

@@ -1,38 +1,34 @@
 import type { NextPage } from "next"
-import { useState } from "react"
+import { useEffect, useState } from "react"
+import { useRouter } from "next/router"
 
 import PreviewWindow from "../components/PreviewWindow"
 import Button from "../components/Button"
+import SelectionOption from "../components/SectionOption"
 
-const Option = ({
-    name,
-    onChange,
-    checked,
-    isDisabled,
-}: {
-    name: string
-    onChange: (e: { currentTarget: { checked: boolean } }) => void
-    checked: boolean
-    isDisabled: boolean
-}) => {
-    return (
-        <div className="text-lg flex items-center gap-5">
-            <input
-                className="w-[20px] h-[20px] aspect-square"
-                type="checkbox"
-                id={name}
-                name={name}
-                checked={checked}
-                onChange={onChange}
-                disabled={!checked && isDisabled}
-            />
-            <label htmlFor={name}>{name}</label>
-        </div>
-    )
-}
+const Selection: NextPage = props => {
+    const router = useRouter()
+    const [title, setTitle] = useState<string>("")
 
-const Selection: NextPage = () => {
-    const [title, setTitle] = useState<string>("Cardiac arrest")
+    useEffect(() => {
+        async function getData() {
+            try {
+                const { keywords } = router.query
+                if (keywords == undefined) {
+                    return
+                }
+                let data = await fetch(`http://localhost:6969/article?keywords=${keywords}`, {
+                    method: "GET",
+                })
+                let jsonData = await data.json()
+                console.log(jsonData)
+            } catch (error) {
+                console.log(error)
+            }
+        }
+
+        getData()
+    }, [router.query])
 
     const maxSelection = 2
 
@@ -62,7 +58,7 @@ const Selection: NextPage = () => {
                 <div className="flex flex-col mt-4">
                     {options.map((element, i) => {
                         return (
-                            <Option
+                            <SelectionOption
                                 name={element[0]}
                                 key={element[0]}
                                 checked={element[1]}
